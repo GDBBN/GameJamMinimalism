@@ -6369,6 +6369,7 @@ MonoBehaviour:
   totalCoins: 1
   targetAnimator: {fileID: 1090928788}
   animationTriggerName: clear
+  collectedCoins: 0
 --- !u!114 &2131502672
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6382,6 +6383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinText: {fileID: 1898271468}
+  coinManager: {fileID: 0}
 --- !u!4 &2131502673
 Transform:
   m_ObjectHideFlags: 0

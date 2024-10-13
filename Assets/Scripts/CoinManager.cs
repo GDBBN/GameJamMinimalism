@@ -3,38 +3,22 @@ using System;
 
 public class CoinManager : MonoBehaviour
 {
-    public static CoinManager Instance { get; private set; }
+    public int totalCoins; // Gesamtzahl der MÃ¼nzen im Level
+    public Animator targetAnimator; // Animator fÃ¼r die Animation
+    public string animationTriggerName = "PlayAnimation"; // Trigger fÃ¼r die Animation
+    public event Action OnCoinCollected; // Event fÃ¼r das MÃ¼nzsammeln
 
-    public int totalCoins; // Gesamtzahl der Münzen im Level
-    public Animator targetAnimator; // Animator, der die Animation abspielen soll
-    public string animationTriggerName = "PlayAnimation"; // Trigger für die Animation
-    public event Action OnCoinCollected;
-
-    public int collectedCoins { get; private set; }
-
-    void Awake()
-    {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(gameObject);
-        }
-        else
-        {
-            Instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-    }
+    public int collectedCoins; // Anzahl der gesammelten MÃ¼nzen
 
     void Start()
     {
-        // Setze die Gesamtzahl der Münzen
+        // Anfangswert der gesammelten MÃ¼nzen festlegen
         collectedCoins = 0;
-        // Die Gesamtzahl der Münzen kann z.B. durch die Anzahl der Coin-Objekte im Level gesetzt werden.
-        // totalCoins = FindObjectsOfType<Coin>().Length; // Optionale automatische Zählung
     }
 
     public void AddCoin()
     {
+        // MÃ¼nze hinzufÃ¼gen und prÃ¼fen, ob alle gesammelt sind
         collectedCoins++;
         OnCoinCollected?.Invoke();
         CheckAllCoinsCollected();
@@ -42,7 +26,6 @@ public class CoinManager : MonoBehaviour
 
     private void CheckAllCoinsCollected()
     {
-        // Überprüfe, ob alle Münzen gesammelt wurden
         if (collectedCoins >= totalCoins)
         {
             PlayAnimation();

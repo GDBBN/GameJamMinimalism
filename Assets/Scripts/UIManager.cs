@@ -1,36 +1,46 @@
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public TMP_Text coinText; // Das Textfeld für die Anzeige der Münzen
+    public TMP_Text coinText; // Das Textfeld fÃ¼r die Anzeige der MÃ¼nzen
+    public CoinManager coinManager; // Referenz auf den CoinManager der Szene
 
     void Start()
     {
-        // Initiale UI-Aktualisierung
-        UpdateCoinUI();
-
-        // Den CoinManager abonnieren, um Änderungen zu überwachen (falls nicht Singleton)
-        if (CoinManager.Instance != null)
+        // Wenn kein CoinManager zugewiesen ist, wird versucht, ihn in der Szene zu finden
+        if (coinManager == null)
         {
-            CoinManager.Instance.OnCoinCollected += UpdateCoinUI;
+            coinManager = FindObjectOfType<CoinManager>();
+        }
+
+        if (coinManager != null)
+        {
+            // Initiale UI-Aktualisierung
+            UpdateCoinUI();
+
+            // Den CoinManager abonnieren, um Ã„nderungen zu Ã¼berwachen
+            coinManager.OnCoinCollected += UpdateCoinUI;
+        }
+        else
+        {
+            Debug.LogError("CoinManager not found in the scene.");
         }
     }
 
     void OnDestroy()
     {
-        // Abonnement vom CoinManager entfernen
-        if (CoinManager.Instance != null)
+        // Abonnement vom CoinManager entfernen, falls vorhanden
+        if (coinManager != null)
         {
-            CoinManager.Instance.OnCoinCollected -= UpdateCoinUI;
+            coinManager.OnCoinCollected -= UpdateCoinUI;
         }
     }
 
-    // Diese Methode wird bei jeder Münzenaktualisierung aufgerufen
+    // Diese Methode wird bei jeder MÃ¼nzenaktualisierung aufgerufen
     public void UpdateCoinUI()
     {
-        int coinCount = CoinManager.Instance.collectedCoins;
-        coinText.text = "Coins: " + coinCount + " / " + CoinManager.Instance.totalCoins;
+        int coinCount = coinManager.collectedCoins;
+        coinText.text = "Coins: " + coinCount + " / " + coinManager.totalCoins;
     }
 }

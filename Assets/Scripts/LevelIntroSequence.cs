@@ -12,13 +12,13 @@ public class LevelIntroSequence : MonoBehaviour
     public string elevatorOpenTrigger = "Open";
     public string elevatorCloseTrigger = "Close";
     public string elevatorDescendTrigger = "Descend";
-    public float delayBetweenSteps = 1f; // Zeitverzögerung zwischen den Schritten
+    public float delayBetweenSteps = 1f;
 
     private bool playerExitedElevator = false;
 
     void Start()
     {
-        player.SetActive(false); // Spieler ist am Anfang deaktiviert
+        player.SetActive(false);
         StartCoroutine(PlayIntroSequence());
     }
 
@@ -36,15 +36,15 @@ public class LevelIntroSequence : MonoBehaviour
         player.SetActive(true);
         yield return new WaitForSeconds(delayBetweenSteps);
 
-        // 4. Elevator öffnet sich
+        // 4. Elevator ï¿½ffnet sich
         elevatorAnimator.SetTrigger(elevatorOpenTrigger);
 
-        // Spieler soll den Aufzug verlassen können, bevor die nächsten Schritte ablaufen
+        // Spieler soll den Aufzug verlassen kï¿½nnen, bevor die nï¿½chsten Schritte ablaufen
     }
 
     void Update()
     {
-        // Überprüfen, ob der Spieler den Aufzug verlassen hat
+        // ï¿½berprï¿½fen, ob der Spieler den Aufzug verlassen hat
         if (playerExitedElevator)
         {
             CloseAndDescendElevator();
@@ -53,7 +53,7 @@ public class LevelIntroSequence : MonoBehaviour
 
     private void CloseAndDescendElevator()
     {
-        // 5. Elevator schließt und fährt wieder nach unten
+        // 5. Elevator schlieï¿½t und fï¿½hrt wieder nach unten
         elevatorAnimator.SetTrigger(elevatorCloseTrigger);
         StartCoroutine(DelayElevatorDescend());
     }
@@ -64,7 +64,7 @@ public class LevelIntroSequence : MonoBehaviour
         elevatorAnimator.SetTrigger(elevatorDescendTrigger);
     }
 
-    // Wird vom Spieler aufgerufen, wenn er den Aufzug verlässt
+    // Wird vom Spieler aufgerufen, wenn er den Aufzug verlï¿½sst
     public void OnPlayerExitElevator()
     {
         playerExitedElevator = true;

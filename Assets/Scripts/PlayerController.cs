@@ -6,11 +6,13 @@ public class CubeController : MonoBehaviour
     public float moveSpeed = 5f;
     private Rigidbody rb;
     private UIManager uiManager;
+    private CoinManager coinManager;
 
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         uiManager = FindObjectOfType<UIManager>();
+        coinManager = FindObjectOfType<CoinManager>();
     }
 
     void Update()
@@ -25,7 +27,7 @@ public class CubeController : MonoBehaviour
 
     public void AddCoin()
     {
-        CoinManager.Instance.AddCoin();
+        coinManager.AddCoin();
         uiManager.UpdateCoinUI();
     }
 }
