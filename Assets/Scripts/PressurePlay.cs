@@ -9,13 +9,13 @@ public class PressurePlay : MonoBehaviour
     public float activationThreshold = 0.1f;
     public AudioSource audioSource;
     public Animator animator;
-    public string animationTrigger = "clear"; // Trigger für die Aktivierung
+    public string animationTrigger = "clear"; 
 
     private Vector3 originalPosition;
     private Color originalColor;
     private bool isActivated = false;
     private bool soundPlayed = false;
-    private bool animationPlayed = false; // Hinzugefügt, um zu verfolgen, ob die Animation bereits abgespielt wurde
+    private bool animationPlayed = false; 
     private Renderer plateRenderer;
 
     void Start()
@@ -34,7 +34,7 @@ public class PressurePlay : MonoBehaviour
 
             if (!animationPlayed)
             {
-                PlayAnimation(); // Animation abspielen
+                PlayAnimation(); 
                 animationPlayed = true;
             }
         }
@@ -46,7 +46,7 @@ public class PressurePlay : MonoBehaviour
         {
             isActivated = false;
             soundPlayed = false;
-            animationPlayed = false; // Animation zurücksetzen, um sie beim erneuten Betreten erneut abspielen zu können
+            animationPlayed = false;
         }
     }
 

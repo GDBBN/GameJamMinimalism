@@ -18,7 +18,7 @@ public class PressurePlate : MonoBehaviour
     private Color originalColor;
     private bool isActivated = false;
     private bool soundPlayed = false;
-    private bool isAnimating = false; // Neue Variable für Animationsstatus
+    private bool isAnimating = false;
     private Renderer plateRenderer;
 
     void Start()

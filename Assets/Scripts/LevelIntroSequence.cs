@@ -24,27 +24,24 @@ public class LevelIntroSequence : MonoBehaviour
 
     private IEnumerator PlayIntroSequence()
     {
-        // 1. Map dreht sich nach oben
+        //Map Anim
         mapAnimator.SetTrigger(mapRotateTrigger);
         yield return new WaitForSeconds(delayBetweenSteps);
 
-        // 2. Elevator steigt auf
+        //elevator rises
         elevatorAnimator.SetTrigger(elevatorRiseTrigger);
         yield return new WaitForSeconds(delayBetweenSteps);
 
-        // 3. Player wird aktiviert
+        //activate Player
         player.SetActive(true);
         yield return new WaitForSeconds(delayBetweenSteps);
 
-        // 4. Elevator �ffnet sich
+        //elevator opens
         elevatorAnimator.SetTrigger(elevatorOpenTrigger);
-
-        // Spieler soll den Aufzug verlassen k�nnen, bevor die n�chsten Schritte ablaufen
     }
 
     void Update()
     {
-        // �berpr�fen, ob der Spieler den Aufzug verlassen hat
         if (playerExitedElevator)
         {
             CloseAndDescendElevator();
@@ -53,7 +50,7 @@ public class LevelIntroSequence : MonoBehaviour
 
     private void CloseAndDescendElevator()
     {
-        // 5. Elevator schlie�t und f�hrt wieder nach unten
+        //Elevator closes and descends
         elevatorAnimator.SetTrigger(elevatorCloseTrigger);
         StartCoroutine(DelayElevatorDescend());
     }
@@ -63,8 +60,7 @@ public class LevelIntroSequence : MonoBehaviour
         yield return new WaitForSeconds(delayBetweenSteps);
         elevatorAnimator.SetTrigger(elevatorDescendTrigger);
     }
-
-    // Wird vom Spieler aufgerufen, wenn er den Aufzug verl�sst
+    
     public void OnPlayerExitElevator()
     {
         playerExitedElevator = true;

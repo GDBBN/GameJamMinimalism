@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class ElevatorExitTrigger : MonoBehaviour
 {
-    public LevelIntroSequence levelIntroSequence; // Referenz zum Hauptskript
+    public LevelIntroSequence levelIntroSequence;
 
     void Start()
     {

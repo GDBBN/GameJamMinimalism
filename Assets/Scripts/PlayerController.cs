@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 public class CubeController : MonoBehaviour
@@ -23,6 +24,16 @@ public class CubeController : MonoBehaviour
         Vector3 movement = new Vector3(moveX, 0, moveZ) * moveSpeed;
 
         rb.velocity = new Vector3(movement.x, rb.velocity.y, movement.z);
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
+        if (Input.GetKeyDown(KeyCode.Escape))
+        {
+            SceneManager.LoadScene("Level_Menu");
+        }
     }
 
     public void AddCoin()

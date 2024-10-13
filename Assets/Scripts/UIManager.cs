@@ -3,12 +3,12 @@ using TMPro;
 
 public class UIManager : MonoBehaviour
 {
-    public TMP_Text coinText; // Das Textfeld für die Anzeige der Münzen
-    public CoinManager coinManager; // Referenz auf den CoinManager der Szene
+    public TMP_Text coinText;
+    public CoinManager coinManager;
 
     void Start()
     {
-        // Wenn kein CoinManager zugewiesen ist, wird versucht, ihn in der Szene zu finden
+        //find coinmanger if none is referenced (falls ichs vergesse)
         if (coinManager == null)
         {
             coinManager = FindObjectOfType<CoinManager>();
@@ -16,10 +16,8 @@ public class UIManager : MonoBehaviour
 
         if (coinManager != null)
         {
-            // Initiale UI-Aktualisierung
             UpdateCoinUI();
-
-            // Den CoinManager abonnieren, um Änderungen zu überwachen
+            
             coinManager.OnCoinCollected += UpdateCoinUI;
         }
         else
@@ -30,14 +28,12 @@ public class UIManager : MonoBehaviour
 
     void OnDestroy()
     {
-        // Abonnement vom CoinManager entfernen, falls vorhanden
         if (coinManager != null)
         {
             coinManager.OnCoinCollected -= UpdateCoinUI;
         }
     }
-
-    // Diese Methode wird bei jeder Münzenaktualisierung aufgerufen
+    
     public void UpdateCoinUI()
     {
         int coinCount = coinManager.collectedCoins;

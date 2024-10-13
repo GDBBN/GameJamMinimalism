@@ -1758,7 +1758,7 @@ Transform:
   m_GameObject: {fileID: 698278599}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: -0.13571563, z: 0, w: 0.99074787}
-  m_LocalPosition: {x: -16.92, y: 2.58, z: -2.43}
+  m_LocalPosition: {x: -17.41, y: 2.08, z: -0.66}
   m_LocalScale: {x: 2.5, y: 2.5, z: 2.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3267,7 +3267,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1052957410}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: -0.7071068, z: 0, w: 0.7071068}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: -16, y: -52, z: -2.38}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -3282,7 +3282,7 @@ Transform:
   - {fileID: 791340977}
   - {fileID: 193656664}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: -90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1057755518
 GameObject:
   m_ObjectHideFlags: 0
@@ -3442,7 +3442,7 @@ MonoBehaviour:
   elevatorCloseTrigger: close
   elevatorDownTrigger: down
   mapSpinTrigger: mapExit
-  nextSceneName: Level_2
+  nextSceneName: Level_1
   elevatorCloseFrames: 70
   elevatorDownFrames: 40
   mapSpinFrames: 70
@@ -5738,8 +5738,8 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 100
-  m_fontSizeBase: 100
+  m_fontSize: 0
+  m_fontSizeBase: 0
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
@@ -6383,7 +6383,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   coinText: {fileID: 1898271468}
-  coinManager: {fileID: 0}
+  coinManager: {fileID: 2131502671}
 --- !u!4 &2131502673
 Transform:
   m_ObjectHideFlags: 0
