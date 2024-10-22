@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class PressurePlate : MonoBehaviour
 {
@@ -9,9 +10,11 @@ public class PressurePlate : MonoBehaviour
     public Vector3 targetPosition;
     public float moveSpeed = 2f;
     public float objectMoveSpeed = 2f;
-    public float activationThreshold = 0.1f;
     public AudioSource audioSource;
     public bool staysActivated = true;
+    
+    public UnityEvent onActivate;
+    public UnityEvent onDeactivate;
 
     private Vector3 _originalPosition;
     private Vector3 _objectOriginalPosition;
@@ -34,14 +37,15 @@ public class PressurePlate : MonoBehaviour
         if (_isAnimating || (!other.CompareTag("Player") && !other.CompareTag("Interactable")) || _isActivated) return;
         _isActivated = true;
         PlaySound();
+        onActivate.Invoke();
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!_isAnimating && !staysActivated && (other.CompareTag("Player") || other.CompareTag("Interactable")))
-        {
-            _isActivated = false;
-        }
+        if (_isAnimating || staysActivated ||
+            (!other.CompareTag("Player") && !other.CompareTag("Interactable"))) return;
+        onDeactivate.Invoke();
+        _isActivated = false;
     }
 
     private void Update()
@@ -64,15 +68,5 @@ public class PressurePlate : MonoBehaviour
         if (audioSource == null || _soundPlayed) return;
         audioSource.Play();
         _soundPlayed = true;
-    }
-
-    public void StartAnimation()
-    {
-        _isAnimating = true;
-    }
-
-    public void EndAnimation()
-    {
-        _isAnimating = false;
     }
 }
