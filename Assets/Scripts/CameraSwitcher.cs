@@ -6,59 +6,57 @@ public class CameraSwitcher : MonoBehaviour
     public Vector3 targetRotation;  
     public float transitionDuration = 1.0f; 
 
-    private Vector3 originalPosition;
-    private Quaternion originalRotation;
-    private bool isSwitched = false;
-    private bool isTransitioning = false;
-    private float transitionTime = 0f;
+    private Vector3 _originalPosition;
+    private Quaternion _originalRotation;
+    private bool _isSwitched;
+    private bool _isTransitioning;
+    private float _transitionTime;
 
-    private Vector3 startPosition;
-    private Quaternion startRotation;
-    private Vector3 endPosition;
-    private Quaternion endRotation;
+    private Vector3 _startPosition;
+    private Quaternion _startRotation;
+    private Vector3 _endPosition;
+    private Quaternion _endRotation;
 
-    void Start()
+    private void Start()
     {
-        originalPosition = transform.position;
-        originalRotation = transform.rotation;
+        _originalPosition = transform.position;
+        _originalRotation = transform.rotation;
     }
 
-    void Update()
+    private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R) && !isTransitioning)
+        if (Input.GetKeyDown(KeyCode.R) && !_isTransitioning)
         {
-            if (isSwitched)
+            if (_isSwitched)
             {
-                startPosition = targetPosition;
-                startRotation = Quaternion.Euler(targetRotation);
-                endPosition = originalPosition;
-                endRotation = originalRotation;
+                _startPosition = targetPosition;
+                _startRotation = Quaternion.Euler(targetRotation);
+                _endPosition = _originalPosition;
+                _endRotation = _originalRotation;
             }
             else
             {
-                startPosition = originalPosition;
-                startRotation = originalRotation;
-                endPosition = targetPosition;
-                endRotation = Quaternion.Euler(targetRotation);
+                _startPosition = _originalPosition;
+                _startRotation = _originalRotation;
+                _endPosition = targetPosition;
+                _endRotation = Quaternion.Euler(targetRotation);
             }
 
-            transitionTime = 0f;
-            isTransitioning = true;
-            isSwitched = !isSwitched;
+            _transitionTime = 0f;
+            _isTransitioning = true;
+            _isSwitched = !_isSwitched;
         }
 
-        if (isTransitioning)
+        if (!_isTransitioning) return;
+        _transitionTime += Time.deltaTime;
+        var t = _transitionTime / transitionDuration;
+
+        transform.position = Vector3.Lerp(_startPosition, _endPosition, t);
+        transform.rotation = Quaternion.Slerp(_startRotation, _endRotation, t);
+
+        if (t >= 1.0f)
         {
-            transitionTime += Time.deltaTime;
-            float t = transitionTime / transitionDuration;
-
-            transform.position = Vector3.Lerp(startPosition, endPosition, t);
-            transform.rotation = Quaternion.Slerp(startRotation, endRotation, t);
-
-            if (t >= 1.0f)
-            {
-                isTransitioning = false;
-            }
+            _isTransitioning = false;
         }
     }
 }

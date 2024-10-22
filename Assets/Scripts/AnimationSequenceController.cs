@@ -9,7 +9,6 @@ public class AnimationSequenceController : MonoBehaviour
     public Animator elevatorAnimator; 
     public Animator mapAnimator; 
     public GameObject player;
-    public GameObject elevator;
     public string elevatorCloseTrigger; 
     public string elevatorDownTrigger; 
     public string mapSpinTrigger; 
@@ -22,11 +21,9 @@ public class AnimationSequenceController : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject == player)
-        {
-            StartCoroutine(PlaySequence());
-            StartCoroutine(LoadSceneAfterDelay());
-        }
+        if (other.gameObject != player) return;
+        StartCoroutine(PlaySequence());
+        StartCoroutine(LoadSceneAfterDelay());
     }
 
     private IEnumerator PlaySequence()
@@ -38,8 +35,6 @@ public class AnimationSequenceController : MonoBehaviour
 
         elevatorAnimator.SetTrigger(elevatorDownTrigger);
         yield return new WaitForSeconds(elevatorDownFrames / frameRate);
-
-        //elevator.transform.position = new Vector3(0, -30, 0);
 
         Debug.Log("tsudgfdszuf");
         mapAnimator.SetTrigger(mapSpinTrigger);

@@ -7,15 +7,13 @@ public class Coin : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
-        {
-            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+        if (!other.CompareTag("Player")) return;
+        AudioSource.PlayClipAtPoint(pickupSound, transform.position);
             
-            Instantiate(pickupEffect, transform.position, Quaternion.identity);
+        Instantiate(pickupEffect, transform.position, Quaternion.identity);
             
-            other.GetComponent<CubeController>().AddCoin();
+        other.GetComponent<CubeController>().AddCoin();
             
-            Destroy(gameObject);
-        }
+        Destroy(gameObject);
     }
 }

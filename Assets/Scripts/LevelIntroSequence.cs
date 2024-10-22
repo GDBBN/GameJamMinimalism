@@ -14,9 +14,9 @@ public class LevelIntroSequence : MonoBehaviour
     public string elevatorDescendTrigger = "Descend";
     public float delayBetweenSteps = 1f;
 
-    private bool playerExitedElevator = false;
+    private bool _playerExitedElevator;
 
-    void Start()
+    private void Start()
     {
         player.SetActive(false);
         StartCoroutine(PlayIntroSequence());
@@ -40,9 +40,9 @@ public class LevelIntroSequence : MonoBehaviour
         elevatorAnimator.SetTrigger(elevatorOpenTrigger);
     }
 
-    void Update()
+    private void Update()
     {
-        if (playerExitedElevator)
+        if (_playerExitedElevator)
         {
             CloseAndDescendElevator();
         }
@@ -63,6 +63,6 @@ public class LevelIntroSequence : MonoBehaviour
     
     public void OnPlayerExitElevator()
     {
-        playerExitedElevator = true;
+        _playerExitedElevator = true;
     }
 }

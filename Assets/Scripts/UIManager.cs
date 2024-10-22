@@ -6,12 +6,12 @@ public class UIManager : MonoBehaviour
     public TMP_Text coinText;
     public CoinManager coinManager;
 
-    void Start()
+    private void Start()
     {
         //find coinmanger if none is referenced (falls ichs vergesse)
         if (coinManager == null)
         {
-            coinManager = FindObjectOfType<CoinManager>();
+            coinManager = FindFirstObjectByType<CoinManager>();
         }
 
         if (coinManager != null)
@@ -26,7 +26,7 @@ public class UIManager : MonoBehaviour
         }
     }
 
-    void OnDestroy()
+    private void OnDestroy()
     {
         if (coinManager != null)
         {
@@ -36,7 +36,7 @@ public class UIManager : MonoBehaviour
     
     public void UpdateCoinUI()
     {
-        int coinCount = coinManager.collectedCoins;
+        var coinCount = coinManager.collectedCoins;
         coinText.text = "Coins: " + coinCount + " / " + coinManager.totalCoins;
     }
 }

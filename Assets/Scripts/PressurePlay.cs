@@ -11,61 +11,53 @@ public class PressurePlay : MonoBehaviour
     public Animator animator;
     public string animationTrigger = "clear"; 
 
-    private Vector3 originalPosition;
-    private Color originalColor;
-    private bool isActivated = false;
-    private bool soundPlayed = false;
-    private bool animationPlayed = false; 
-    private Renderer plateRenderer;
+    private Vector3 _originalPosition;
+    private Color _originalColor;
+    private bool _isActivated;
+    private bool _soundPlayed;
+    private bool _animationPlayed; 
+    private Renderer _plateRenderer;
 
-    void Start()
+    private void Start()
     {
-        originalPosition = plate.position;
-        plateRenderer = plate.GetComponent<Renderer>();
-        originalColor = plateRenderer.material.color;
+        _originalPosition = plate.position;
+        _plateRenderer = plate.GetComponent<Renderer>();
+        _originalColor = _plateRenderer.material.color;
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if ((other.CompareTag("Player") || other.CompareTag("Interactable")) && !isActivated)
-        {
-            isActivated = true;
-            PlaySound();
+        if ((!other.CompareTag("Player") && !other.CompareTag("Interactable")) || _isActivated) return;
+        _isActivated = true;
+        PlaySound();
 
-            if (!animationPlayed)
-            {
-                PlayAnimation(); 
-                animationPlayed = true;
-            }
-        }
+        if (_animationPlayed) return;
+        PlayAnimation(); 
+        _animationPlayed = true;
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Interactable"))
-        {
-            isActivated = false;
-            soundPlayed = false;
-            animationPlayed = false;
-        }
+        if (!other.CompareTag("Player") && !other.CompareTag("Interactable")) return;
+        _isActivated = false;
+        _soundPlayed = false;
+        _animationPlayed = false;
     }
 
-    void Update()
+    private void Update()
     {
-        Vector3 targetPlatePosition = isActivated ? pressedPosition : originalPosition;
+        var targetPlatePosition = _isActivated ? pressedPosition : _originalPosition;
         plate.position = Vector3.Lerp(plate.position, targetPlatePosition, Time.deltaTime * moveSpeed);
 
-        Color targetColor = isActivated ? pressedColor : originalColor;
-        plateRenderer.material.color = Color.Lerp(plateRenderer.material.color, targetColor, Time.deltaTime * moveSpeed);
+        var targetColor = _isActivated ? pressedColor : _originalColor;
+        _plateRenderer.material.color = Color.Lerp(_plateRenderer.material.color, targetColor, Time.deltaTime * moveSpeed);
     }
 
     private void PlaySound()
     {
-        if (audioSource != null && !soundPlayed)
-        {
-            audioSource.Play();
-            soundPlayed = true;
-        }
+        if (audioSource == null || _soundPlayed) return;
+        audioSource.Play();
+        _soundPlayed = true;
     }
 
     private void PlayAnimation()

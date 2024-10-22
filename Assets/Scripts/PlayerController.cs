@@ -5,25 +5,25 @@ using UnityEngine.SceneManagement;
 public class CubeController : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    private Rigidbody rb;
-    private UIManager uiManager;
-    private CoinManager coinManager;
+    private Rigidbody _rb;
+    private UIManager _uiManager;
+    private CoinManager _coinManager;
 
-    void Start()
+    private void Start()
     {
-        rb = GetComponent<Rigidbody>();
-        uiManager = FindObjectOfType<UIManager>();
-        coinManager = FindObjectOfType<CoinManager>();
+        _rb = GetComponent<Rigidbody>();
+        _uiManager = FindFirstObjectByType<UIManager>();
+        _coinManager = FindFirstObjectByType<CoinManager>();
     }
 
-    void Update()
+    private void Update()
     {
-        float moveX = Input.GetAxis("Horizontal");
-        float moveZ = Input.GetAxis("Vertical");
+        var moveX = Input.GetAxis("Horizontal");
+        var moveZ = Input.GetAxis("Vertical");
 
-        Vector3 movement = new Vector3(moveX, 0, moveZ) * moveSpeed;
+        var movement = new Vector3(moveX, 0, moveZ) * moveSpeed;
 
-        rb.linearVelocity = new Vector3(movement.x, rb.linearVelocity.y, movement.z);
+        _rb.linearVelocity = new Vector3(movement.x, _rb.linearVelocity.y, movement.z);
 
         if (Input.GetKeyDown(KeyCode.B))
         {
@@ -38,7 +38,7 @@ public class CubeController : MonoBehaviour
 
     public void AddCoin()
     {
-        coinManager.AddCoin();
-        uiManager.UpdateCoinUI();
+        _coinManager.AddCoin();
+        _uiManager.UpdateCoinUI();
     }
 }

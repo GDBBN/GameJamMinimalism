@@ -14,75 +14,67 @@ public class PressureMenu : MonoBehaviour
     public float activationThreshold = 0.1f;
     public AudioSource audioSource;
 
-    private Vector3 originalPosition;
-    private Vector3 objectOriginalPosition;
-    private Color originalColor;
-    private bool isActivated = false;
-    private bool objectActivated = false;
-    private bool soundPlayed = false;
-    private Renderer plateRenderer;
+    private Vector3 _originalPosition;
+    private Vector3 _objectOriginalPosition;
+    private Color _originalColor;
+    private bool _isActivated;
+    private bool _objectActivated;
+    private bool _soundPlayed;
+    private Renderer _plateRenderer;
 
-    void Start()
+    private void Start()
     {
-        originalPosition = plate.position;
-        objectOriginalPosition = objectToMove.position;
-        plateRenderer = plate.GetComponent<Renderer>();
-        originalColor = plateRenderer.material.color;
+        _originalPosition = plate.position;
+        _objectOriginalPosition = objectToMove.position;
+        _plateRenderer = plate.GetComponent<Renderer>();
+        _originalColor = _plateRenderer.material.color;
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Interactable"))
-        {
-            isActivated = true;
-            PlaySound();
-        }
+        if (!other.CompareTag("Player") && !other.CompareTag("Interactable")) return;
+        _isActivated = true;
+        PlaySound();
     }
 
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
-        if (other.CompareTag("Player") || other.CompareTag("Interactable"))
-        {
-            isActivated = false;
-            objectActivated = false;
-            soundPlayed = false;
-        }
+        if (!other.CompareTag("Player") && !other.CompareTag("Interactable")) return;
+        _isActivated = false;
+        _objectActivated = false;
+        _soundPlayed = false;
     }
 
-    void Update()
+    private void Update()
     {
         // Bewege die Platte und ändere ihre Farbe
-        Vector3 targetPlatePosition = isActivated ? pressedPosition : originalPosition;
+        var targetPlatePosition = _isActivated ? pressedPosition : _originalPosition;
         plate.position = Vector3.Lerp(plate.position, targetPlatePosition, Time.deltaTime * moveSpeed);
 
-        Color targetColor = isActivated ? pressedColor : originalColor;
-        plateRenderer.material.color = Color.Lerp(plateRenderer.material.color, targetColor, Time.deltaTime * moveSpeed);
+        var targetColor = _isActivated ? pressedColor : _originalColor;
+        _plateRenderer.material.color = Color.Lerp(_plateRenderer.material.color, targetColor, Time.deltaTime * moveSpeed);
 
         // Überprüfe, ob die Platte an ihrer Zielposition ist
-        if (isActivated && !objectActivated && Vector3.Distance(plate.position, pressedPosition) <= activationThreshold)
+        if (_isActivated && !_objectActivated && Vector3.Distance(plate.position, pressedPosition) <= activationThreshold)
         {
-            objectActivated = true;
+            _objectActivated = true;
         }
 
         // Bewege das Objekt zur Zielposition
-        Vector3 targetObjectPosition = isActivated ? targetPosition : objectOriginalPosition;
+        var targetObjectPosition = _isActivated ? targetPosition : _objectOriginalPosition;
         objectToMove.position = Vector3.Lerp(objectToMove.position, targetObjectPosition, Time.deltaTime * objectMoveSpeed);
 
         // Überprüfe, ob die Platte und das zu bewegende Objekt ihre Zielpositionen erreicht haben und beende das Spiel
-        if (objectActivated && Vector3.Distance(plate.position, pressedPosition) <= activationThreshold)
-        {
-            Application.Quit();
-            Debug.Log("Quit Game");
-        }
+        if (!_objectActivated || !(Vector3.Distance(plate.position, pressedPosition) <= activationThreshold)) return;
+        Application.Quit();
+        Debug.Log("Quit Game");
     }
 
     private void PlaySound()
     {
-        if (audioSource != null && !soundPlayed)
-        {
-            audioSource.Play();
-            soundPlayed = true;
-        }
+        if (audioSource == null || _soundPlayed) return;
+        audioSource.Play();
+        _soundPlayed = true;
     }
     
 }

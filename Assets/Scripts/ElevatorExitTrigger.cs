@@ -4,15 +4,15 @@ public class ElevatorExitTrigger : MonoBehaviour
 {
     public LevelIntroSequence levelIntroSequence;
 
-    void Start()
+    private void Start()
     {
         if (levelIntroSequence == null)
         {
-            levelIntroSequence = FindObjectOfType<LevelIntroSequence>();
+            levelIntroSequence = FindFirstObjectByType<LevelIntroSequence>();
         }
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {

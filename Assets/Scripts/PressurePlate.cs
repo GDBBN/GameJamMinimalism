@@ -13,70 +13,66 @@ public class PressurePlate : MonoBehaviour
     public AudioSource audioSource;
     public bool staysActivated = true;
 
-    private Vector3 originalPosition;
-    private Vector3 objectOriginalPosition;
-    private Color originalColor;
-    private bool isActivated = false;
-    private bool soundPlayed = false;
-    private bool isAnimating = false;
-    private Renderer plateRenderer;
+    private Vector3 _originalPosition;
+    private Vector3 _objectOriginalPosition;
+    private Color _originalColor;
+    private bool _isActivated;
+    private bool _soundPlayed;
+    private bool _isAnimating;
+    private Renderer _plateRenderer;
 
-    void Start()
+    private void Start()
     {
-        originalPosition = plate.position;
-        objectOriginalPosition = objectToMove.position;
-        plateRenderer = plate.GetComponent<Renderer>();
-        originalColor = plateRenderer.material.color;
+        _originalPosition = plate.position;
+        _objectOriginalPosition = objectToMove.position;
+        _plateRenderer = plate.GetComponent<Renderer>();
+        _originalColor = _plateRenderer.material.color;
     }
 
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (!isAnimating && (other.CompareTag("Player") || other.CompareTag("Interactable")) && !isActivated)
+        if (_isAnimating || (!other.CompareTag("Player") && !other.CompareTag("Interactable")) || _isActivated) return;
+        _isActivated = true;
+        PlaySound();
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (!_isAnimating && !staysActivated && (other.CompareTag("Player") || other.CompareTag("Interactable")))
         {
-            isActivated = true;
-            PlaySound();
+            _isActivated = false;
         }
     }
 
-    void OnTriggerExit(Collider other)
-    {
-        if (!isAnimating && !staysActivated && (other.CompareTag("Player") || other.CompareTag("Interactable")))
-        {
-            isActivated = false;
-        }
-    }
-
-    void Update()
+    private void Update()
     {
         // Set target positions and color based on the activation state
-        Vector3 targetPlatePosition = isActivated ? pressedPosition : originalPosition;
-        Vector3 targetObjectPosition = isActivated ? targetPosition : objectOriginalPosition;
-        Color targetColor = isActivated ? pressedColor : originalColor;
+        var targetPlatePosition = _isActivated ? pressedPosition : _originalPosition;
+        var targetObjectPosition = _isActivated ? targetPosition : _objectOriginalPosition;
+        var targetColor = _isActivated ? pressedColor : _originalColor;
 
         // Smoothly move the plate and object towards their target positions
         plate.position = Vector3.Lerp(plate.position, targetPlatePosition, Time.deltaTime * moveSpeed);
         objectToMove.position = Vector3.Lerp(objectToMove.position, targetObjectPosition, Time.deltaTime * objectMoveSpeed);
 
         // Smoothly transition the plate's color
-        plateRenderer.material.color = Color.Lerp(plateRenderer.material.color, targetColor, Time.deltaTime * moveSpeed);
+        _plateRenderer.material.color = Color.Lerp(_plateRenderer.material.color, targetColor, Time.deltaTime * moveSpeed);
     }
 
     private void PlaySound()
     {
-        if (audioSource != null && !soundPlayed)
-        {
-            audioSource.Play();
-            soundPlayed = true;
-        }
+        if (audioSource == null || _soundPlayed) return;
+        audioSource.Play();
+        _soundPlayed = true;
     }
 
     public void StartAnimation()
     {
-        isAnimating = true;
+        _isAnimating = true;
     }
 
     public void EndAnimation()
     {
-        isAnimating = false;
+        _isAnimating = false;
     }
 }

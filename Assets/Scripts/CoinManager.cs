@@ -10,7 +10,7 @@ public class CoinManager : MonoBehaviour
 
     public int collectedCoins;
 
-    void Start()
+    private void Start()
     {
         collectedCoins = 0;
     }
